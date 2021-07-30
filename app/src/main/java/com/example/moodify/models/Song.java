@@ -5,6 +5,7 @@ public class Song {
     private String id;
     private String name;
     private String mood;
+    private String artist;
 
     public Song(String id, String name) {
         this.name = name;
@@ -31,8 +32,16 @@ public class Song {
         return mood;
     }
 
-    public void setMood(String id) {
+    public void setMood(String mood) {
         this.mood = mood;
     }
 
-}
+    public String getArtist() {
+        return artist;
+    }
+    public void setArtist(String name) {
+        this.artist = name;
+    }
+    }
+
+

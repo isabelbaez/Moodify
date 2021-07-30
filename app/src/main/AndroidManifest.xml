@@ -12,14 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moodify">
-
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".CheckSongActivity" />
-
         <activity
             android:name="com.spotify.sdk.android.auth.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
