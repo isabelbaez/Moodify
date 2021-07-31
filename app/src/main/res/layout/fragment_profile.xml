@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,22 +13,55 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="90dp"
-        android:text="TextView" />
+        android:text="Isabel"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/etStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etName"
+        android:layout_below="@+id/currentStatus"
         android:layout_alignStart="@+id/etName"
         android:layout_marginStart="0dp"
         android:layout_marginTop="20dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/currentStatus"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/etName"
+        android:layout_alignStart="@+id/etName"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/live_status" />
+
+    <TextView
+        android:id="@+id/RecentMoods"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etStatus"
+        android:layout_alignStart="@+id/etName"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="50dp"
+        android:text="Your Recent Moods:"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pcMoods"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/etStatus" />
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_alignStart="@+id/etName"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/RecentMoods" />
+
 
 </RelativeLayout>

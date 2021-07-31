@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.moodify.MainActivity;
 import com.example.moodify.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;

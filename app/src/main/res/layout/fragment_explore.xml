@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.FeedFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvUsers"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/etSearch"
+        android:layout_alignStart="@+id/etSearch"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="90dp"
+        android:ems="10"
+        android:hint="Search users"
+        android:inputType="textPersonName" />
+
+    <ImageButton
+        android:id="@+id/btnSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/etSearch"
+        android:src="?android:attr/actionModeWebSearchDrawable" />
+
+</RelativeLayout>

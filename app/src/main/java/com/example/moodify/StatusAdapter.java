@@ -1,4 +1,4 @@
-package com.example.moodify.connectors;
+package com.example.moodify;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,8 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.moodify.R;
-import com.example.moodify.models.User;
 import com.parse.ParseUser;
 
 import java.util.List;

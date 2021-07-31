@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,9 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.moodify.R;
 import com.example.moodify.StatusAdapter;
+import com.example.moodify.UsersAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -23,16 +27,18 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+public class ExploreFragment extends Fragment {
 
-public class FeedFragment extends Fragment {
+    protected List<ParseUser> users;
+    protected UsersAdapter adapter;
+    protected EditText etSearch;
+    protected AppCompatImageButton btnSearch;
 
-    protected List<ParseUser> statuses;
-    protected StatusAdapter adapter;
-    protected ParseUser currentUser = ParseUser.getCurrentUser();
+    protected String username;
 
-    RecyclerView rvStatuses;
+    RecyclerView rvUsers;
 
-    public FeedFragment() {
+    public ExploreFragment() {
         // Required empty public constructor
     }
 
@@ -40,59 +46,56 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_feed, container, false);
+        return inflater.inflate(R.layout.fragment_explore, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rvStatuses = view.findViewById(R.id.rvUsers);
-
         // initialize the array that will hold posts and create a PostsAdapter
-        statuses = new ArrayList<>();
-        adapter = new StatusAdapter(getContext(), statuses);
+        users = new ArrayList<>();
+        adapter = new UsersAdapter(getContext(), users);
+
+        rvUsers = view.findViewById(R.id.rvUsers);
+        etSearch = view.findViewById(R.id.etSearch);
+        btnSearch = view.findViewById(R.id.btnSearch);
 
         // set the adapter on the recycler view
-        rvStatuses.setAdapter(adapter);
+        rvUsers.setAdapter(adapter);
         // set the layout manager on the recycler view
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rvStatuses.setLayoutManager(linearLayoutManager);
+        rvUsers.setLayoutManager(linearLayoutManager);
         // query posts from Instagram
-        queryStatuses();
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.clear();
+                username = etSearch.getText().toString();
+                queryStatuses(username);
+            }
+        });
+        //Log.i("ExploreFEed", "User: " + username);
     }
 
-    protected void queryStatuses() {
+    protected void queryStatuses(String username) {
         // specify what type of data we want to query - Post.class
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
         // include data referred by user key
         query.include("username");
-        // limit query to latest 20 items
-
-        ArrayList<String> friends = (ArrayList<String>) currentUser.get("friends");
-
-        if (friends == null) {
-            friends = new ArrayList<>();
-        }
-
-        query.whereContainedIn("username", friends);
-
-        query.setLimit(20);
-        // order posts by creation date (newest first)
+        query.whereEqualTo("username", username);
         // start an asynchronous call for posts
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e != null) {
-                    Log.e("FeedFragment", "Issue with getting statuses", e);
+                    Log.e("ExploreFragment", "Issue with getting users", e);
                     return;
                 }
                 // for debugging purposes let's print every post description to logcat
-                for (ParseUser user : statuses) {
-                    Log.i("FeedFragment", "Status: " + user.getString("status") + ", username: " + user.getUsername());
-                }
                 // save received posts to list and notify adapter of new data
-                statuses.addAll(objects);
+                users.addAll(objects);
                 adapter.notifyDataSetChanged();
             }
         });

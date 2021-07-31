@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.moodify.R;
 import com.example.moodify.connectors.SongService;
 import com.example.moodify.connectors.UserService;
+import com.example.moodify.fragments.ExploreFragment;
 import com.example.moodify.fragments.FeedFragment;
 import com.example.moodify.fragments.ProfileFragment;
 import com.example.moodify.models.Song;
@@ -49,7 +50,10 @@ public class MainActivity extends AppCompatActivity {
     private SongService songService;
     private ArrayList<Song> recentlyPlayedTracks;
 
-    private static final String SCOPES = "user-read-recently-played,user-library-modify,user-read-email,user-read-private, streaming";
+    private ParseUser currentUser = ParseUser.getCurrentUser();
+
+    private static final String SCOPES = "user-read-recently-played,user-library-modify," +
+            "user-read-email,user-read-private, streaming";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +62,10 @@ public class MainActivity extends AppCompatActivity {
         songService = new SongService(this);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
 
         setContentView(R.layout.activity_main);
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             //);
         } else {
@@ -81,10 +84,13 @@ public class MainActivity extends AppCompatActivity {
         currentUser.put("chill", "0");
         currentUser.saveInBackground();
 
-        SharedPreferences sharedPreferences = this.getSharedPreferences("SPOTIFY", 0);
-
         getTracks(currentUser);
         currentUser.saveInBackground();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -99,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.feed_action:
                                 fragment = new FeedFragment();
+                                break;
+                            case R.id.explore_action:
+                                fragment = new ExploreFragment();
                                 break;
                             case R.id.profile_action:
                             default:
@@ -400,6 +409,7 @@ public class MainActivity extends AppCompatActivity {
             }*/
         });
 
+
         Log.d("plis", "Plis " + user.getUsername());
     }
 
@@ -450,6 +460,7 @@ public class MainActivity extends AppCompatActivity {
                         firstSong.getName() + " - " + firstSong.getArtist());
                 user.saveInBackground();
             });
+
 
             /*Song song = recentlyPlayedTracks.get(n);
 
@@ -535,6 +546,7 @@ public class MainActivity extends AppCompatActivity {
             editor.commit();
 
             Log.i("I burn you?", "You melt me.");
+            //startCheckActivity();
         });
     }
 
