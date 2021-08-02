@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,9 +39,11 @@ public class FriendProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        etFriendName = (TextView) findViewById(R.id.etFriendName);
-        etFriendStatus = (TextView) findViewById(R.id.etFriendStatus);
-        pcFriendMoods = (PieChart) findViewById(R.id.pcFriendMoods);
+        setContentView(R.layout.activity_friend_profile);
+
+        etFriendName = findViewById(R.id.etFriendName);
+        etFriendStatus = findViewById(R.id.etFriendStatus);
+        pcFriendMoods = findViewById(R.id.pcFriendMoods);
 
         user = Parcels.unwrap(getIntent().getParcelableExtra("user"));
 
@@ -61,8 +64,6 @@ public class FriendProfileActivity extends AppCompatActivity {
         pcFriendMoods.setData(moodData);
 
         moodDataSet.setColors(MOOD_COLORS);
-
-        setContentView(R.layout.activity_friend_profile);
     }
 
     public static final int[] MOOD_COLORS = {

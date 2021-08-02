@@ -74,7 +74,7 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
                 // create intent for the new activity
                 Intent intent = new Intent(context, FriendProfileActivity.class);
                 // serialize the movie using parceler, use its short name as a key
-                intent.putExtra("post", Parcels.wrap(user));
+                intent.putExtra("user", Parcels.wrap(user));
                 // show the activity
                 context.startActivity(intent);
             }

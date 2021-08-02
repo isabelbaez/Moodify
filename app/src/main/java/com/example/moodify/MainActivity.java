@@ -26,7 +26,9 @@ import com.example.moodify.fragments.ProfileFragment;
 import com.example.moodify.models.Song;
 import com.example.moodify.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -38,6 +40,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String TAG = "MainActivity";
     private final String CLIENT_ID = "1124ddefbcad484993f7f56399a98ffb";
     private static final int REQUEST_CODE = 1337;
     private static final String REDIRECT_URI = "com.example.moodify://callback";
@@ -152,11 +155,11 @@ public class MainActivity extends AppCompatActivity {
 
         songService.getRecentlyPlayedTracks(() -> {
             recentlyPlayedTracks = songService.getSongs();
-            updateSong();
+            updateSong(user);
 
-            Integer total = recentlyPlayedTracks.size();
+            /*Integer total = recentlyPlayedTracks.size();
             user.put("numberTracks",total);
-            user.saveInBackground();
+            user.saveInBackground();*/
             //user.put("RecentSongs", recentlyPlayedTracks);
 
             for (int n = 0; n < recentlyPlayedTracks.size(); n++) {
@@ -164,8 +167,6 @@ public class MainActivity extends AppCompatActivity {
                 setMood(user, song);
                 user.saveInBackground();
             }
-
-            Log.d("USer test: ", user.toString());
         });
     }
 
@@ -173,49 +174,102 @@ public class MainActivity extends AppCompatActivity {
 
         if (recentlyPlayedTracks.size() > 0) {
             //ParseUser user = ParseUser.getCurrentUser();
-
             songService.songMood(song, song.getId(), () -> {
                 Log.i("PLIS", "woo: " + song.getMood());
                 if (song.getMood().equals("Happy")) {
                     Integer count = Integer.valueOf(user.getString("happiness")) + 1;
                     user.put("happiness", count.toString());
-                    user.saveInBackground();
+                    user.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e == null){
+                                Log.d(TAG, "Updated user:");
+                            }else{
+                                Log.d(TAG, "Error updating user: " + e.getLocalizedMessage());
+                            }
+                        }
+                    });
 
                 } else if (song.getMood().equals("Sad")) {
                     Integer count = Integer.valueOf(user.getString("sadness")) + 1;
                     user.put("sadness", count.toString());
-                    user.saveInBackground();
+                    user.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e == null){
+                                Log.d(TAG, "Updated user:");
+                            }else{
+                                Log.d(TAG, "Error updating user: " + e.getLocalizedMessage());
+                            }
+                        }
+                    });
 
                 } else if (song.getMood().equals("Angry")) {
                     Integer count = Integer.valueOf(user.getString("anger")) + 1;
                     user.put("anger", count.toString());
-                    user.saveInBackground();
+                    user.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e == null){
+                                Log.d(TAG, "Updated user:");
+                            }else{
+                                Log.d(TAG, "Error updating user: " + e.getLocalizedMessage());
+                            }
+                        }
+                    });
 
                 } else if (song.getMood().equals("Energized")) {
                     Integer count = Integer.valueOf(user.getString("energy")) + 1;
                     user.put("energy", count.toString());
-                    user.saveInBackground();
+                    user.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e == null){
+                                Log.d(TAG, "Updated user:");
+                            }else{
+                                Log.d(TAG, "Error updating user: " + e.getLocalizedMessage());
+                            }
+                        }
+                    });
 
                 } else {
                     Integer count = Integer.valueOf(user.getString("chill")) + 1;
                     user.put("chill", count.toString());
-                    user.saveInBackground();
+                    user.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e == null){
+                                Log.d(TAG, "Updated user:");
+                            }else{
+                                Log.d(TAG, "Error updating user: " + e.getLocalizedMessage());
+                            }
+                        }
+                    });
                 }
             });
         }
     }
 
-    private void updateSong() {
+    private void updateSong(ParseUser user) {
 
         if (recentlyPlayedTracks.size() > 0) {
 
-            ParseUser user = ParseUser.getCurrentUser();
+            //ParseUser user = ParseUser.getCurrentUser();
             Song firstSong = recentlyPlayedTracks.get(0);
 
             songService.songMood(firstSong, firstSong.getId(), () -> {
                 user.put("status", "Feeling " + firstSong.getMood() + " and listening to " +
                         firstSong.getName() + " - " + firstSong.getArtist());
-                user.saveInBackground();
+                user.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e == null){
+                            Log.d(TAG, "Updated user:");
+                        }else{
+                            Log.d(TAG, "Error updating user: " + e.getLocalizedMessage());
+                        }
+                    }
+                });
             });
         }
     }
