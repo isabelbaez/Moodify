@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         currentUser.saveInBackground();
 
         getTracks(currentUser);
-        currentUser.saveInBackground();
+        //currentUser.saveInBackground();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
         // handle navigation selection
@@ -121,9 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setSelectedItemId(R.id.feed_action);
 
-
         /*Integer total = Integer.valueOf(currentUser.getString("numberTracks"));
-
 
         Double happiness = (Integer.valueOf(currentUser.getString("happiness")).doubleValue() - 1)
                 /total.doubleValue();
@@ -157,9 +154,6 @@ public class MainActivity extends AppCompatActivity {
             recentlyPlayedTracks = songService.getSongs();
             updateSong();
 
-            //setMood(user, recentlyPlayedTracks.get(0));
-            //setMood(recentlyPlayedTracks.get(0));
-
             Integer total = recentlyPlayedTracks.size();
             user.put("numberTracks",total);
             user.saveInBackground();
@@ -171,246 +165,8 @@ public class MainActivity extends AppCompatActivity {
                 user.saveInBackground();
             }
 
-            //user.put("moods", moods);
-
-
-            /*Double happiness = (Integer.valueOf(user.getString("happiness")).doubleValue() - 1)
-                    /total.doubleValue();
-            user.put("happiness", happiness.toString());
-
-            Double sadness = (Integer.valueOf(user.getString("sadness")).doubleValue() - 1)
-                    /total.doubleValue();
-            user.put("sadness", sadness.toString());
-
-            Double energy = (Integer.valueOf(user.getString("energy")).doubleValue() - 1)
-                    /total.doubleValue();
-            user.put("energy", energy.toString());
-
-            Double anger = (Integer.valueOf(user.getString("anger")).doubleValue() - 1)
-                    /total.doubleValue();
-            user.put("anger", anger.toString());
-
-            Double chill = (Integer.valueOf(user.getString("chill")).doubleValue() - 1)
-                    /total.doubleValue();
-            user.put("chill", chill.toString());*/
-
-            /*finalMoods = new Map<String, Double>() {
-                @Override
-                public int size() {
-                    return 0;
-                }
-
-                @Override
-                public boolean isEmpty() {
-                    return false;
-                }
-
-                @Override
-                public boolean containsKey(@Nullable Object key) {
-                    return false;
-                }
-
-                @Override
-                public boolean containsValue(@Nullable Object value) {
-                    return false;
-                }
-
-                @Nullable
-                @Override
-                public Double get(@Nullable Object key) {
-                    return null;
-                }
-
-                @Nullable
-                @Override
-                public Double put(String key, Double value) {
-                    return null;
-                }
-
-                @Nullable
-                @Override
-                public Double remove(@Nullable Object key) {
-                    return null;
-                }
-
-                @Override
-                public void putAll(@NonNull Map<? extends String, ? extends Double> m) {
-
-                }
-
-                @Override
-                public void clear() {
-
-                }
-
-                @NonNull
-                @Override
-                public Set<String> keySet() {
-                    return null;
-                }
-
-                @NonNull
-                @Override
-                public Collection<Double> values() {
-                    return null;
-                }
-
-                @NonNull
-                @Override
-                public Set<Entry<String, Double>> entrySet() {
-                    return null;
-                }
-            };*/
-
-            /*rawMoods = new Map<String, Integer>() {
-                @Override
-                public int size() {
-                    return 0;
-                }
-
-                @Override
-                public boolean isEmpty() {
-                    return false;
-                }
-
-                @Override
-                public boolean containsKey(@Nullable Object key) {
-                    return false;
-                }
-
-                @Override
-                public boolean containsValue(@Nullable Object value) {
-                    return false;
-                }
-
-                @Nullable
-                @Override
-                public Integer get(@Nullable Object key) {
-                    return null;
-                }
-
-                @Nullable
-                @Override
-                public Integer put(String key, Integer value) {
-                    return null;
-                }
-
-                @Nullable
-                @Override
-                public Integer remove(@Nullable Object key) {
-                    return null;
-                }
-
-                @Override
-                public void putAll(@NonNull Map<? extends String, ? extends Integer> m) {
-
-                }
-
-                @Override
-                public void clear() {
-
-                }
-
-                @NonNull
-                @Override
-                public Set<String> keySet() {
-                    return null;
-                }
-
-                @NonNull
-                @Override
-                public Collection<Integer> values() {
-                    return null;
-                }
-
-                @NonNull
-                @Override
-                public Set<Entry<String, Integer>> entrySet() {
-                    return null;
-                }
-            };
-
-            rawMoods.put("Sad", Integer.valueOf(0));
-            rawMoods.put("Happy", Integer.valueOf(0));
-            rawMoods.put("Energized", Integer.valueOf(0));
-            rawMoods.put("Angry", Integer.valueOf(0));
-            rawMoods.put("Chill", Integer.valueOf(0));*/
-
-           /* Happy = 0;
-            Sad = 0;
-            Angry = 0;
-            Energized = 0;
-            Chill = 0;*/
-
-            /*Integer zero = 2;
-
-            user.put("happiness", zero.toString());
-            user.put("sadness", zero.toString());
-            user.put("anger", zero.toString());
-            user.put("chill", zero.toString());
-            user.put("energy", zero.toString());*/
-
-            /*for (int n = 0; n < recentlyPlayedTracks.size(); n++) {
-
-                Song song = recentlyPlayedTracks.get(n);
-                songService.songMood(recentlyPlayedTracks.get(n),recentlyPlayedTracks.get(n).getId(),() -> {
-                    //count = rawMoods.get(song.getMood());
-
-                    if (song.getMood().equals("Happy")) {
-                        Integer count = Integer.valueOf(user.getString("happiness")) + 1;
-                        user.put("happiness", count.toString());
-                    } else if (song.getMood().equals("Sad")) {
-                        Integer count = Integer.valueOf(user.getString("sadness")) + 1;
-                        user.put("sadness", count.toString());
-                    } else if (song.getMood().equals("Angry")) {
-                        Integer count = Integer.valueOf(user.getString("anger")) + 1;
-                        user.put("anger", count.toString());
-                    } else if (song.getMood().equals("Energized")) {
-                        Integer count = Integer.valueOf(user.getString("energy")) + 1;
-                        user.put("energy", count.toString());
-                    } else {
-                        Integer count = Integer.valueOf(user.getString("chill")) + 1;
-                        user.put("chill", count.toString());
-                    };
-
-                    //Log.d("Profile", "Mood: " + song.getMood());
-                    //rawMoods.put(song.getMood(), count + 1);
-                });
-            }
-
-            Log.i("plis", "plis: " + Integer.valueOf(user.getString("happiness")));
-
-            Double happiness = (Integer.valueOf(user.getString("happiness")).doubleValue() - 1)
-                    /total.doubleValue();
-            user.put("happiness", happiness.toString());
-
-            Double sadness = (Integer.valueOf(user.getString("sadness")).doubleValue() - 1)
-                    /total.doubleValue();
-            user.put("sadness", sadness.toString());
-
-            Double energy = (Integer.valueOf(user.getString("energy")).doubleValue() - 1)
-                    /total.doubleValue();
-            user.put("energy", energy.toString());
-
-            Double anger = (Integer.valueOf(user.getString("anger")).doubleValue() - 1)
-                    /total.doubleValue();
-            user.put("anger", anger.toString());
-
-            Double chill = (Integer.valueOf(user.getString("chill")).doubleValue() - 1)
-                    /total.doubleValue();
-            user.put("chill", chill.toString());*/
-
-            /*for (Map.Entry<String, Integer> entry : rawMoods.entrySet()) {
-                String key = entry.getKey();
-                Integer val = entry.getValue();
-                Integer total = recentlyPlayedTracks.size();
-                Double newVal = val.doubleValue()/total.doubleValue();
-                finalMoods.put(key, newVal);
-            }*/
+            Log.d("USer test: ", user.toString());
         });
-
-
-        Log.d("plis", "Plis " + user.getUsername());
     }
 
     private void setMood(ParseUser user, Song song) {
@@ -447,12 +203,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-    };
+    }
 
     private void updateSong() {
-        if (recentlyPlayedTracks.size() > 0) {
-            ParseUser user = ParseUser.getCurrentUser();
 
+        if (recentlyPlayedTracks.size() > 0) {
+
+            ParseUser user = ParseUser.getCurrentUser();
             Song firstSong = recentlyPlayedTracks.get(0);
 
             songService.songMood(firstSong, firstSong.getId(), () -> {
@@ -460,43 +217,13 @@ public class MainActivity extends AppCompatActivity {
                         firstSong.getName() + " - " + firstSong.getArtist());
                 user.saveInBackground();
             });
-
-
-            /*Song song = recentlyPlayedTracks.get(n);
-
-            songService.songMood(recentlyPlayedTracks.get(n),recentlyPlayedTracks.get(n).getId(),() -> {
-                    //count = rawMoods.get(song.getMood());
-
-                    if (song.getMood().equals("Happy")) {
-                        Integer count = Integer.valueOf(user.getString("happiness")) + 1;
-                        user.put("happiness", count.toString());
-                    } else if (song.getMood().equals("Sad")) {
-                        Integer count = Integer.valueOf(user.getString("sadness")) + 1;
-                        user.put("sadness", count.toString());
-                    } else if (song.getMood().equals("Angry")) {
-                        Integer count = Integer.valueOf(user.getString("anger")) + 1;
-                        user.put("anger", count.toString());
-                    } else if (song.getMood().equals("Energized")) {
-                        Integer count = Integer.valueOf(user.getString("energy")) + 1;
-                        user.put("energy", count.toString());
-                    } else {
-                        Integer count = Integer.valueOf(user.getString("chill")) + 1;
-                        user.put("chill", count.toString());
-                    };
-                    //Log.d("Profile", "Mood: " + song.getMood());
-                    //rawMoods.put(song.getMood(), count + 1);
-                });
-            }*/
-
-            //Log.i("plis", "plis: " + Integer.valueOf(user.getString("happiness")));
-
-            //song.setMood(mood);
         }
     }
 
     private void goLogin() {
         Intent newintent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(newintent);
+        finish();
     }
 
     @Override
@@ -552,7 +279,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void authenticateSpotify() {
         AuthorizationRequest.Builder builder =
-                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
+                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN,
+                        REDIRECT_URI);
         builder.setScopes(new String[]{SCOPES});
         AuthorizationRequest request = builder.build();
         AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);

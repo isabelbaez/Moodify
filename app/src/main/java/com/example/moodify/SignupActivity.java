@@ -20,9 +20,8 @@ public class SignupActivity extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
     private EditText etEmail;
-    private EditText etPhone;
-    private Button createLogin;
-    private Button createSignup;
+    private Button goLogin;
+    private Button btnSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +30,12 @@ public class SignupActivity extends AppCompatActivity {
 
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
-        //etEmail = findViewById(R.id.etEmail);
+        etEmail = findViewById(R.id.etEmail);
 
-        //createLogin = findViewById(R.id.createLogin);
-        //createSignup = findViewById(R.id.createSignup);
+        //btnLogin = findViewById(R.id.createLogin);
+        btnSignup = findViewById(R.id.btnSignup);
 
-        /*createSignup.setOnClickListener(new View.OnClickListener() {
+        btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "OnClick of Login Button!");
@@ -44,13 +43,13 @@ public class SignupActivity extends AppCompatActivity {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 String email = etEmail.getText().toString();
-                String phone = etPhone.getText().toString();
 
-                signupUser(username, password, email, phone);
+                signupUser(username, password, email);
+                goMainActivity();
             }
-        });*/
+        });
 
-        createLogin.setOnClickListener(new View.OnClickListener() {
+        goLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goLoginActivity();
@@ -63,7 +62,7 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    private void signupUser(String username, String password, String email, String phone) {
+    private void signupUser(String username, String password, String email) {
         // Create the ParseUser
         ParseUser user = new ParseUser();
         // Set core properties
@@ -71,7 +70,6 @@ public class SignupActivity extends AppCompatActivity {
         user.setPassword(password);
         user.setEmail(email);
         // Set custom properties
-        user.put("phone", phone);
         // Invoke signUpInBackground
 
         user.signUpInBackground(new SignUpCallback() {

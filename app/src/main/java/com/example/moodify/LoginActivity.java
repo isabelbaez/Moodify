@@ -23,14 +23,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String TAG = "LoginActivity";
 
-    private final String CLIENT_ID = "1124ddefbcad484993f7f56399a98ffb";
-    private static final int REQUEST_CODE = 1337;
-    private static final String REDIRECT_URI = "com.example.moodify://callback";
-    private static final String SCOPES = "user-read-recently-played,user-library-modify,user-read-email,user-read-private";
-
     private EditText etUsername;
     private EditText etPassword;
     private Button btnLogin;
+    private Button goSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        goSignup = findViewById(R.id.goSignup);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,12 +49,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        /*btn2Signup.setOnClickListener(new View.OnClickListener() {
+        goSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goSignupActivity();
             }
-        });*/
+        });
     }
 
     private void goSignupActivity() {
@@ -79,14 +76,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void authenticateSpotify() {
-        AuthorizationRequest.Builder builder =
-                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
-        builder.setScopes(new String[]{SCOPES});
-        AuthorizationRequest request = builder.build();
-        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
 
     private void goMainActivity() {
