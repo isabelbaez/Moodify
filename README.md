@@ -118,7 +118,7 @@ https://www.figma.com/file/8UO2SOtI10DGsosmGCaiQM/Untitled?node-id=0%3A1
     - (Read/GET) Recently played songs (Spotify API call) and moods (from Parse)
     - (Read/GET) Current status (Spotify API call) and mood (from Parse)
     
-- [Create basic snippets for each Parse network request]
+#### Create basic snippets for each Parse network request
 - Query logged in user object:
     -  Parseuser currentUser = Parseuser.getCurrentUser();
 - To play a user's status: 
@@ -144,7 +144,7 @@ https://www.figma.com/file/8UO2SOtI10DGsosmGCaiQM/Untitled?node-id=0%3A1
    - ArrayList<String> friends = (ArrayList<String>) currentUser.get("friends");
    - query.whereContainedIn("username", friends);
   
-- [OPTIONAL: List endpoints if using existing API such as Yelp]
+#### OPTIONAL: List endpoints if using existing API such as Yelp
   - Get a user's information: "https://api.spotify.com/v1/me"
   - Get a user's recently played tracks: "https://api.spotify.com/v1/me/player/recently-played"
   - Get a song's audio features (for mood calculaions): "https://api.spotify.com/v1/audio-features/" + songId
