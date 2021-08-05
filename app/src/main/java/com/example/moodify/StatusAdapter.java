@@ -28,20 +28,9 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
     private Context context;
     private List<ParseUser> friends;
 
-    OnDoubleClickListener doubleClickListener;
-    OnClickListener clickListener;
-
     public StatusAdapter(Context context, List<ParseUser> friends) {
         this.context = context;
         this.friends = friends;
-    }
-
-    public interface OnDoubleClickListener{
-        void onItemLongClicked(int position);
-    }
-
-    public interface OnClickListener{
-        void onItemClicked(int position);
     }
 
     @NonNull

@@ -6,21 +6,62 @@
     android:layout_height="match_parent"
     tools:context=".fragments.FeedFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMixes"
+    <!--<androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvUsers"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/etSearch"
+        android:layout_alignStart="@+id/etSearch"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/rvHappySongs"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         android:layout_below="@+id/etSearch"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvUsers"
 
+        android:id="@+id/rvSadSongs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/etSearch"
+        android:layout_height="100dp"
+        android:layout_below="@+id/rvHappySongs"
+        android:layout_alignStart="@+id/etSearch"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/rvAngrySongs"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/rvSadSongs"
+        android:layout_alignStart="@+id/etSearch"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/rvChillSongs"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/rvAngrySongs"
+        android:layout_alignStart="@+id/etSearch"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/rvEnergizedSongs"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/rvChillSongs"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp" />
