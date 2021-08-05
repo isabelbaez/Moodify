@@ -16,52 +16,103 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp" />-->
 
+    <TextView
+        android:id="@+id/tvHappyMix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etSearch"
+        android:layout_alignStart="@+id/etSearch"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:text="Happy Mix" />
+
+
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/rvHappySongs"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@+id/etSearch"
+        android:layout_height="200dp"
+        android:layout_below="@+id/tvHappyMix"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/tvSadMix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvHappySongs"
+        android:layout_alignStart="@+id/etSearch"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:text="Sad Mix" />
 
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/rvSadSongs"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@+id/rvHappySongs"
+        android:layout_height="200dp"
+        android:layout_below="@+id/tvSadMix"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/tvAngryMix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvSadSongs"
+        android:layout_alignStart="@+id/etSearch"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:text="Angry Mix" />
 
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/rvAngrySongs"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@+id/rvSadSongs"
+        android:layout_height="200dp"
+        android:layout_below="@+id/tvAngryMix"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/tvChillMix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvAngrySongs"
+        android:layout_alignStart="@+id/etSearch"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:text="Chill Mix" />
 
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/rvChillSongs"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@+id/rvAngrySongs"
+        android:layout_height="200dp"
+        android:layout_below="@+id/tvChillMix"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/tvEnergizedMix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvChillSongs"
+        android:layout_alignStart="@+id/etSearch"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:text="Energized Mix" />
 
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/rvEnergizedSongs"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@+id/rvChillSongs"
+        android:layout_height="200dp"
+        android:layout_below="@+id/tvEnergizedMix"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp" />

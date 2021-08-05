@@ -40,11 +40,11 @@ public class ExploreFragment extends Fragment {
     protected List<Song> energizedSongs;
 
     protected UsersAdapter userAdapter;
-    protected UsersAdapter happySongsAdapter;
-    protected UsersAdapter sadSongsAdapter;
-    protected UsersAdapter angrySongsAdapter;
-    protected UsersAdapter chillSongsAdapter;
-    protected UsersAdapter energizedSongsAdapter;
+    protected SongsAdapter happySongsAdapter;
+    protected SongsAdapter sadSongsAdapter;
+    protected SongsAdapter angrySongsAdapter;
+    protected SongsAdapter chillSongsAdapter;
+    protected SongsAdapter energizedSongsAdapter;
 
     protected ParseUser currentUser = ParseUser.getCurrentUser();
 
@@ -83,14 +83,21 @@ public class ExploreFragment extends Fragment {
         // initialize the array that will hold posts and create a PostsAdapter
         songService = new SongService(getContext());
 
-        users = new ArrayList<>();;
+        users = new ArrayList<>();
+
+        happySongs = new ArrayList<Song>();
+        sadSongs = new ArrayList<Song>();
+        angrySongs = new ArrayList<Song>();
+        chillSongs = new ArrayList<Song>();
+        energizedSongs = new ArrayList<Song>();
 
         userAdapter = new UsersAdapter(getContext(), users);
-        happySongsAdapter = new UsersAdapter(getContext(), happySongs);
-        sadSongsAdapter = new UsersAdapter(getContext(), sadSongs);
-        angrySongsAdapter = new UsersAdapter(getContext(), users);
-        chillSongsAdapter = new UsersAdapter(getContext(), users);
-        energizedSongsAdapter = new UsersAdapter(getContext(), users);
+
+        happySongsAdapter = new SongsAdapter(getContext(), happySongs);
+        sadSongsAdapter = new SongsAdapter(getContext(), sadSongs);
+        angrySongsAdapter = new SongsAdapter(getContext(), angrySongs);
+        chillSongsAdapter = new SongsAdapter(getContext(), chillSongs);
+        energizedSongsAdapter = new SongsAdapter(getContext(), energizedSongs);
 
         rvHappySongs = view.findViewById(R.id.rvHappySongs);
         rvSadSongs = view.findViewById(R.id.rvSadSongs);
@@ -103,8 +110,6 @@ public class ExploreFragment extends Fragment {
         LinearLayoutManager angryLinearLayoutManager = new LinearLayoutManager(getContext());
         LinearLayoutManager chillLinearLayoutManager = new LinearLayoutManager(getContext());
         LinearLayoutManager energizedLinearLayoutManager = new LinearLayoutManager(getContext());
-
-        getTracks(currentUser);
 
         rvHappySongs.setAdapter(happySongsAdapter);
         rvHappySongs.setLayoutManager(happyLinearLayoutManager);
@@ -120,6 +125,8 @@ public class ExploreFragment extends Fragment {
 
         rvEnergizedSongs.setAdapter(energizedSongsAdapter);
         rvEnergizedSongs.setLayoutManager(energizedLinearLayoutManager);
+
+        getTracks(currentUser);
 
         //Log.i("ExploreFragment", "Size: " + happySongs.size());
 
@@ -150,14 +157,6 @@ public class ExploreFragment extends Fragment {
     }
 
     private void getTracks(ParseUser user) {
-
-        user.put("happyMix", new ArrayList<>());
-        user.put("sadMix", new ArrayList<>());
-        user.put("angryMix", new ArrayList<>());
-        user.put("chillMix", new ArrayList<>());
-        user.put("energizedMix", new ArrayList<>());
-        user.saveInBackground();
-
         songService.getRecentlyPlayedTracks(() -> {
             recentlyPlayedTracks = songService.getSongs();
             getRecommendedTracks(user);
@@ -175,37 +174,24 @@ public class ExploreFragment extends Fragment {
                     songService.songMood(song, song.getId(), () -> {
 
                         if (song.getMood() == "Happy"){
-                            ArrayList<String> happyTracks = (ArrayList<String>) user.get("happyMix");
-                            happyTracks.add(song.getName() + " - " + song.getArtist());
-                            user.put("happyMix", happyTracks);
-                            user.saveInBackground();
-
+                            happySongs.add(song);
+                            happySongsAdapter.notifyDataSetChanged();
                         } else if (song.getMood() == "Sad") {
-                            ArrayList<String> sadTracks = (ArrayList<String>) user.get("sadMix");
-                            sadTracks.add(song.getName() + " - " + song.getArtist());
-                            user.put("sadMix", sadTracks);
-                            user.saveInBackground();
-
+                            sadSongs.add(song);
+                            sadSongsAdapter.notifyDataSetChanged();
                         } else if (song.getMood() == "Angry") {
-                            ArrayList<String> angryTracks = (ArrayList<String>) user.get("angryMix");
-                            angryTracks.add(song.getName() + " - " + song.getArtist());
-                            user.put("angryMix", angryTracks);
-                            user.saveInBackground();
-
+                            angrySongs.add(song);
+                            angrySongsAdapter.notifyDataSetChanged();
                         } else if (song.getMood() == "Chill") {
-                            ArrayList<String> chillTracks = (ArrayList<String>) user.get("chillMix");
-                            chillTracks.add(song.getName() + " - " + song.getArtist());
-                            user.put("chillMix", chillTracks);
-                            user.saveInBackground();
-
+                            chillSongs.add(song);
+                            chillSongsAdapter.notifyDataSetChanged();
                         } else {
-                            ArrayList<String> energizedTracks = (ArrayList<String>) user.get("energizedMix");
-                            energizedTracks.add(song.getName() + " - " + song.getArtist());
-                            user.put("energizedMix", energizedTracks);
-                            user.saveInBackground();
+                            energizedSongs.add(song);
+                            energizedSongsAdapter.notifyDataSetChanged();
                         }
                     });
                 }
+                //Log.i("ExploreFragment", "Size: " + happyTracks.size());
             });
         }
     }

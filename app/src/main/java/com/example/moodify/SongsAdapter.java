@@ -17,9 +17,9 @@ import java.util.List;
 public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> {
 
     private Context context;
-    private List<String> songs;
+    private List<Song> songs;
 
-    public SongsAdapter(Context context, List<String> songs) {
+    public SongsAdapter(Context context, List<Song> songs) {
         this.context = context;
         this.songs = songs;
     }
@@ -33,7 +33,7 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String song = songs.get(position);
+        Song song = songs.get(position);
         holder.bind(song);
     }
 
@@ -51,8 +51,8 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
             tvSong = itemView.findViewById(R.id.tvSong);
         }
 
-        public void bind(String song) {
-            tvSong.setText(song);
+        public void bind(Song song) {
+            tvSong.setText(song.getName() + " - " + song.getArtist());
         }
     }
 }
