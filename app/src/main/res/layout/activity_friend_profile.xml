@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="110dp"
         android:text="Isabel"
         android:textColor="#000000"
         android:textSize="30sp"
@@ -60,7 +60,7 @@
         android:layout_alignStart="@+id/etFriendName"
         android:layout_marginStart="0dp"
         android:layout_marginTop="50dp"
-        android:text="Your Recent Moods:"
+        android:text="Their Recent Moods:"
         android:textColor="#000000"
         android:textSize="20dp"
         android:textStyle="bold" />

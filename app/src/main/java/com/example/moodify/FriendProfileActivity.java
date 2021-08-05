@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +37,7 @@ public class FriendProfileActivity extends AppCompatActivity {
     TextView etFriendName;
     TextView etFriendStatus;
     PieChart pcFriendMoods;
+    ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class FriendProfileActivity extends AppCompatActivity {
         etFriendName = findViewById(R.id.etFriendName);
         etFriendStatus = findViewById(R.id.etFriendStatus);
         pcFriendMoods = findViewById(R.id.pcFriendMoods);
+        btnBack = findViewById(R.id.btnBack);
 
         user = Parcels.unwrap(getIntent().getParcelableExtra("user"));
 
@@ -64,10 +69,22 @@ public class FriendProfileActivity extends AppCompatActivity {
         pcFriendMoods.setData(moodData);
 
         moodDataSet.setColors(MOOD_COLORS);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goMainActivity();
+            }
+        });
     }
 
     public static final int[] MOOD_COLORS = {
             Color.rgb(255, 213, 0), Color.rgb(102, 178, 255), Color.rgb(204, 0, 0),
             Color.rgb(255, 145, 0), Color.rgb(204, 153, 255)
     };
+
+    private void goMainActivity() {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
 }

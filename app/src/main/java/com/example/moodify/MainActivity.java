@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private final String CLIENT_ID = "1124ddefbcad484993f7f56399a98ffb";
     private static final int REQUEST_CODE = 1337;
     private static final String REDIRECT_URI = "com.example.moodify://callback";
-    private SpotifyAppRemote mSpotifyAppRemote;
+    public SpotifyAppRemote mSpotifyAppRemote;
 
     private SharedPreferences.Editor editor;
     private SharedPreferences msharedPreferences;
@@ -52,11 +52,12 @@ public class MainActivity extends AppCompatActivity {
 
     private SongService songService;
     private ArrayList<Song> recentlyPlayedTracks;
+    private ArrayList<Song> recommendedTracks;
 
     private ParseUser currentUser = ParseUser.getCurrentUser();
 
     private static final String SCOPES = "user-read-recently-played,user-library-modify," +
-            "user-read-email,user-read-private, streaming";
+            "user-read-email,user-read-private,streaming,user-modify-playback-state";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView =
+                (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
         // handle navigation selection
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -116,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
                                 fragment = new ProfileFragment();
                                 break;
                         }
-                        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                        fragmentManager.beginTransaction().replace(R.id.flContainer,
+                                fragment).commit();
                         return true;
                     }
                 });
@@ -152,15 +155,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getTracks(ParseUser user) {
+        //songService.addTrackQueue("spotify:track:7ewT0nLFkMD8ONbRibePr9");
 
         songService.getRecentlyPlayedTracks(() -> {
             recentlyPlayedTracks = songService.getSongs();
             updateSong(user);
-
-            /*Integer total = recentlyPlayedTracks.size();
-            user.put("numberTracks",total);
-            user.saveInBackground();*/
-            //user.put("RecentSongs", recentlyPlayedTracks);
+            getRecommendedTracks(user);
 
             for (int n = 0; n < recentlyPlayedTracks.size(); n++) {
                 Song song = recentlyPlayedTracks.get(n);
@@ -170,10 +170,44 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void getRecommendedTracks(ParseUser user) {
+        Log.i("Recommended", "user: " + user.getString("genres"));
+        if (recentlyPlayedTracks.size() > 0) {
+            songService.getRecommendedTracks(recentlyPlayedTracks, user.getString("genres"), () -> {
+                recommendedTracks = songService.getRecommendedSongs();
+                for (int n = 0; n < recommendedTracks.size(); n++) {
+                    Log.i("RecommendedTracks", "track: " + recommendedTracks.get(n).getName());
+                }
+            });
+        }
+    }
+
     private void setMood(ParseUser user, Song song) {
 
         if (recentlyPlayedTracks.size() > 0) {
-            //ParseUser user = ParseUser.getCurrentUser();
+            Log.i("Get genres", "This: " + song.getArtistId());
+
+            songService.setSongGenres(song, song.getArtistId(),() -> {
+                    String value = user.getString("genres");
+                    Log.i("Get genres", "genres: " + song.getGenres());
+                    if (value == null || value.isEmpty()) {
+                        value = song.getGenres();
+                    } else {
+                        value = value + "," + song.getGenres();
+                    }
+                    user.put("genres", value);
+                    user.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e == null){
+                                Log.d(TAG, "Updated user:");
+                            }else{
+                                Log.d(TAG, "Error updating user: " + e.getLocalizedMessage());
+                            }
+                        }
+                    });
+                });
+
             songService.songMood(song, song.getId(), () -> {
                 Log.i("PLIS", "woo: " + song.getMood());
                 if (song.getMood().equals("Happy")) {
@@ -260,6 +294,11 @@ public class MainActivity extends AppCompatActivity {
             songService.songMood(firstSong, firstSong.getId(), () -> {
                 user.put("status", "Feeling " + firstSong.getMood() + " and listening to " +
                         firstSong.getName() + " - " + firstSong.getArtist());
+
+                Log.i("Main", "URI: " + firstSong.getURI());
+                user.put("currentMood", firstSong.getMood());
+                user.put("lastSongURI", firstSong.getURI());
+
                 user.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
