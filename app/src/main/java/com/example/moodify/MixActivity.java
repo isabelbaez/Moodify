@@ -1,13 +1,12 @@
 package com.example.moodify;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Movie;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.EditText;
 
 import com.example.moodify.connectors.SongService;
 import com.example.moodify.models.Song;
@@ -16,67 +15,65 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HappyMixActivity extends AppCompatActivity {
+public class MixActivity extends AppCompatActivity {
 
-    protected List<Song> happySongs;
+    protected List<Song> songs;
+    protected String mood;
 
-    protected SongsAdapter happySongsAdapter;
+    protected SongsAdapter songsAdapter;
 
     protected ParseUser currentUser = ParseUser.getCurrentUser();
-
 
     protected SongService songService;
     protected ArrayList<Song> recentlyPlayedTracks;
     protected ArrayList<Song> recommendedTracks;
 
-    RecyclerView rvHappySongs;
+    RecyclerView rvSongs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_happy_mix);
+        setContentView(R.layout.activity_mix);
 
+        mood = getIntent().getStringExtra("Mood");
         songService = new SongService(this);
+        songs = new ArrayList<Song>();
+        songsAdapter = new SongsAdapter(this, songs);
 
-        happySongs = new ArrayList<Song>();
+        rvSongs = findViewById(R.id.rvSongs);
 
-        happySongsAdapter = new SongsAdapter(this, happySongs);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
-        rvHappySongs = findViewById(R.id.rvHappySongs);
+        rvSongs.setAdapter(songsAdapter);
+        rvSongs.setLayoutManager(linearLayoutManager);
 
-        LinearLayoutManager happyLinearLayoutManager = new LinearLayoutManager(this);
-
-        rvHappySongs.setAdapter(happySongsAdapter);
-        rvHappySongs.setLayoutManager(happyLinearLayoutManager);
-
-        getTracks(currentUser);
-
+        getTracks(currentUser, mood);
     }
 
-    private void getTracks(ParseUser user) {
+    private void getTracks(ParseUser user, String mood) {
         songService.getRecentlyPlayedTracks(() -> {
             recentlyPlayedTracks = songService.getSongs();
-            getRecommendedTracks(user);
+            getRecommendedTracks(user, mood);
+            Log.i("MixActivity", "Mood: " + mood);
         });
     }
 
-    private void getRecommendedTracks(ParseUser user) {
+    private void getRecommendedTracks(ParseUser user, String mood) {
         Log.i("Recommended", "user: " + user.getString("genres"));
         if (recentlyPlayedTracks.size() > 0) {
-            songService.getRecommendedTracks(recentlyPlayedTracks, user.getString("genres"), () -> {
+            songService.getRecommendedTracks(recentlyPlayedTracks, () -> {
                 recommendedTracks = songService.getRecommendedSongs();
 
                 for (int n = 0; n < recommendedTracks.size(); n++) {
                     Song song = recommendedTracks.get(n);
                     songService.songMood(song, song.getId(), () -> {
 
-                        if (song.getMood() == "Happy"){
-                            happySongs.add(song);
-                            happySongsAdapter.notifyDataSetChanged();
+                        if (song.getMood().equals(mood)){
+                            songs.add(song);
+                            songsAdapter.notifyDataSetChanged();
                         }
                     });
                 }
-                //Log.i("ExploreFragment", "Size: " + happyTracks.size());
             });
         }
     }

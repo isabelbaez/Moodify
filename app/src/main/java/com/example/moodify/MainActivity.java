@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
     private SongService songService;
     private ArrayList<Song> recentlyPlayedTracks;
-    private ArrayList<Song> recommendedTracks;
 
     private ParseUser currentUser = ParseUser.getCurrentUser();
 
@@ -125,33 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         bottomNavigationView.setSelectedItemId(R.id.feed_action);
-
-        /*Integer total = Integer.valueOf(currentUser.getString("numberTracks"));
-
-        Double happiness = (Integer.valueOf(currentUser.getString("happiness")).doubleValue() - 1)
-                /total.doubleValue();
-        currentUser.put("happiness", happiness.toString());
-        currentUser.saveInBackground();
-
-        Double sadness = (Integer.valueOf(currentUser.getString("sadness")).doubleValue() - 1)
-                /total.doubleValue();
-        currentUser.put("sadness", sadness.toString());
-        currentUser.saveInBackground();
-
-        Double energy = (Integer.valueOf(currentUser.getString("energy")).doubleValue() - 1)
-                /total.doubleValue();
-        currentUser.put("energy", energy.toString());
-        currentUser.saveInBackground();
-
-        Double anger = (Integer.valueOf(currentUser.getString("anger")).doubleValue() - 1)
-                /total.doubleValue();
-        currentUser.put("anger", anger.toString());
-        currentUser.saveInBackground();
-
-        Double chill = (Integer.valueOf(currentUser.getString("chill")).doubleValue() - 1)
-                /total.doubleValue();
-        currentUser.put("chill", chill.toString());
-        currentUser.saveInBackground();*/
     }
 
     private void getTracks(ParseUser user) {
@@ -160,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
         songService.getRecentlyPlayedTracks(() -> {
             recentlyPlayedTracks = songService.getSongs();
             updateSong(user);
-            getRecommendedTracks(user);
 
             for (int n = 0; n < recentlyPlayedTracks.size(); n++) {
                 Song song = recentlyPlayedTracks.get(n);
@@ -170,43 +141,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getRecommendedTracks(ParseUser user) {
-        Log.i("Recommended", "user: " + user.getString("genres"));
-        if (recentlyPlayedTracks.size() > 0) {
-            songService.getRecommendedTracks(recentlyPlayedTracks, user.getString("genres"), () -> {
-                recommendedTracks = songService.getRecommendedSongs();
-                for (int n = 0; n < recommendedTracks.size(); n++) {
-                    Log.i("RecommendedTracks", "track: " + recommendedTracks.get(n).getName());
-                }
-            });
-        }
-    }
-
     private void setMood(ParseUser user, Song song) {
 
         if (recentlyPlayedTracks.size() > 0) {
             Log.i("Get genres", "This: " + song.getArtistId());
-
-            songService.setSongGenres(song, song.getArtistId(),() -> {
-                    String value = user.getString("genres");
-                    Log.i("Get genres", "genres: " + song.getGenres());
-                    if (value == null || value.isEmpty()) {
-                        value = song.getGenres();
-                    } else {
-                        value = value + "," + song.getGenres();
-                    }
-                    user.put("genres", value);
-                    user.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if(e == null){
-                                Log.d(TAG, "Updated user:");
-                            }else{
-                                Log.d(TAG, "Error updating user: " + e.getLocalizedMessage());
-                            }
-                        }
-                    });
-                });
 
             songService.songMood(song, song.getId(), () -> {
                 Log.i("PLIS", "woo: " + song.getMood());

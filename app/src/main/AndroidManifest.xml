@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moodify">
-        <activity android:name=".HappyMixActivity"></activity>
+        <activity android:name=".MixActivity"></activity>
         <activity android:name=".FriendProfileActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".LoginActivity" />

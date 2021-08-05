@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.FeedFragment">
 
-    <!--<androidx.recyclerview.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvUsers"
 
         android:layout_width="match_parent"
@@ -14,10 +14,10 @@
         android:layout_below="@+id/etSearch"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp" />-->
+        android:layout_marginTop="10dp" />
 
     <TextView
-        android:id="@+id/tvHappyMix"
+        android:id="@+id/HappyMix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etSearch"
@@ -25,97 +25,42 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp"
         android:text="Happy Mix" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-
-        android:id="@+id/rvHappySongs"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/tvHappyMix"
-        android:layout_alignStart="@+id/etSearch"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp" />
-
     <TextView
-        android:id="@+id/tvSadMix"
+        android:id="@+id/SadMix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rvHappySongs"
+        android:layout_below="@+id/HappyMix"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp"
         android:text="Sad Mix" />
-
-    <androidx.recyclerview.widget.RecyclerView
-
-        android:id="@+id/rvSadSongs"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/tvSadMix"
-        android:layout_alignStart="@+id/etSearch"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp" />
-
     <TextView
-        android:id="@+id/tvAngryMix"
+        android:id="@+id/AngryMix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rvSadSongs"
+        android:layout_below="@+id/SadMix"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp"
         android:text="Angry Mix" />
-
-    <androidx.recyclerview.widget.RecyclerView
-
-        android:id="@+id/rvAngrySongs"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/tvAngryMix"
-        android:layout_alignStart="@+id/etSearch"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp" />
-
     <TextView
-        android:id="@+id/tvChillMix"
+        android:id="@+id/ChillMix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rvAngrySongs"
+        android:layout_below="@+id/AngryMix"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp"
         android:text="Chill Mix" />
-
-    <androidx.recyclerview.widget.RecyclerView
-
-        android:id="@+id/rvChillSongs"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/tvChillMix"
-        android:layout_alignStart="@+id/etSearch"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp" />
-
     <TextView
-        android:id="@+id/tvEnergizedMix"
+        android:id="@+id/EnergizedMix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rvChillSongs"
+        android:layout_below="@+id/ChillMix"
         android:layout_alignStart="@+id/etSearch"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp"
         android:text="Energized Mix" />
-
-    <androidx.recyclerview.widget.RecyclerView
-
-        android:id="@+id/rvEnergizedSongs"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/tvEnergizedMix"
-        android:layout_alignStart="@+id/etSearch"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp" />
 
     <EditText
         android:id="@+id/etSearch"
@@ -135,5 +80,6 @@
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/etSearch"
         android:src="?android:attr/actionModeWebSearchDrawable" />
+
 
 </RelativeLayout>

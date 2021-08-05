@@ -41,15 +41,16 @@ public class SongService {
     private Double valenceDecimal;
     private String energy;
     private String valence;
-    private Song song;
+
+    private String TAG = "SongService";
+
+    //Base code from (working with API calls) from:
+    // https://towardsdatascience.com/using-the-spotify-api-with-your-android-application-the-essentials-1a3c1bc36b9e
+    // Uses the Volley library for API calls
 
     public SongService(Context context) {
         sharedPreferences = context.getSharedPreferences("SPOTIFY", 0);
         queue = Volley.newRequestQueue(context);
-    }
-
-    public Song getSong() {
-        return song;
     }
 
     public ArrayList<Song> getSongs() {
@@ -60,23 +61,26 @@ public class SongService {
         return recommendedSongs;
     }
 
+    //API call to get a song's audio features from its ID and set its mood.
     public void songMood(Song song, String id, final VolleyCallBack callBack) {
         String endpoint = "https://api.spotify.com/v1/audio-features/" + id;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, endpoint, null, response -> {
+                    //gets energy (measures intensity and tempo) audio value
                     try {
                         energyDecimal = response.getDouble("energy");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
+                    //gets valence (measures positiveness of lyrics audio value
                     try {
                         valenceDecimal = response.getDouble("valence");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
+                    //sets energy value as "low", "medium", or "high"
                     if (0.0 <= energyDecimal && energyDecimal <= 0.33) {
                         energy = "low";
                     } else if (0.33 < energyDecimal && energyDecimal <= 0.66) {
@@ -85,6 +89,7 @@ public class SongService {
                         energy = "high";
                     }
 
+                    //sets valence value as "low", "medium", or "high"
                     if (0.0 <= valenceDecimal && valenceDecimal <= 0.33) {
                         valence = "low";
                     } else if (0.33 < valenceDecimal && valenceDecimal <= 0.66) {
@@ -92,33 +97,40 @@ public class SongService {
                     } else {
                         valence = "high";
                     }
-
+                    // decides mood based on valence measure and energy measure
+                    // (eg. low intensity (slow song) and low positiveness of
+                    // lyrics would indicate a sad song)
                     if (energy.equals("low")){
                         if (valence.equals("low")){
                             song.setMood("Sad");
                         } else {
+                            // low energy but happy/fine lyrics, equal chill song
                             song.setMood("Chill");
                         }
                     } else if (energy.equals("medium")) {
                         if (valence.equals("low")) {
+                            // medium energy but negative lyrics, equal sad song
                             song.setMood("Sad");
                         } else if (valence.equals("medium")){
+                            // medium energy but fine/happy lyrics, equal happy
                             song.setMood("Happy");
                         } else {
                             song.setMood("Happy");
                         }
                     } else {
                         if (valence.equals("low")) {
+                            // negative lyrics and high energy equal angry
                             song.setMood("Angry");
                         } else {
+                            // positive lyrics and high energy equal energized
                             song.setMood("Energized");
                         }
                     }
                     callBack.onSuccess();
                 }, error -> {
-                    // TODO: Handle error
+                    Log.e(TAG, "Error getting and setting song's mood", error);
                 }) {
-
+            //Authorization token for request
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -131,95 +143,24 @@ public class SongService {
         queue.add(jsonObjectRequest);
     }
 
-    /*public void addTrackQueue2(String uri) {
-        AsyncHttpClient client = new AsyncHttpClient();
-
-        RequestParams params = new RequestParams();
-        params.put("uri", uri);
-
-        RequestHeaders headers = new RequestHeaders();
-        String token = sharedPreferences.getString("token", "");
-        String auth = "Bearer " + token;
-        headers.put("Authorization", auth);
-
-        client.post("https://api.spotify.com/v1/me/player/queue", new TextHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Headers headers, String response) {
-                        // called when response HTTP status is "200 OK"
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Headers headers, String errorResponse, Throwable t) {
-                        // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                    }
-        }) {
-
-        };
-    }*/
-
-    public void addTrackQueue(String uri){
-        String endpoint = "https://api.spotify.com/v1/me/player/queue";
-
-        StringRequest myReq = new StringRequest(Request.Method.POST, endpoint,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e("SongService", "response: " + response);
-                        //mPostCommentResponse.requestCompleted();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("send help", "plis" + error.networkResponse.statusCode, error);
-                        //mPostCommentResponse.requestEndedWithError(error);
-                    }
-                }) {
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                String token = sharedPreferences.getString("token", "");
-                String auth = "Bearer " + token;
-                headers.put("Authorization", auth);
-                //headers.put("Content-Type", "application/json");
-                //headers.put("Accept", "application/json");
-                return headers;
-            }
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                String token = sharedPreferences.getString("token", "");
-                Log.e("SongService", "uri: " + uri);
-                params.put("uri", uri);
-                //params.put("Content-Type", "application/json");
-                //params.put("Authorization", "Bearer " + token);
-                Log.e("SongService", "params: " + params);
-                return params;
-            }
-        };
-        queue.add(myReq);
-    }
-
-    public ArrayList<Song> getRecommendedTracks(ArrayList<Song> SeedTracks, String genres,
+    //Taking some example songs, gets some recommended tracks based of the songs' IDs.
+    public ArrayList<Song> getRecommendedTracks(ArrayList<Song> SeedTracks,
                                                 final VolleyCallBack callBack) {
         String ids = "";
-        String artists = "";
-
+        // Extract song IDs.
         for (int n = 0; n < 5; n++) {
             Song song = SeedTracks.get(n);
             if (ids.isEmpty()) {
                 ids = song.getId();
-                artists = song.getArtistId();
             } else {
                 ids = ids + "," + song.getId();
-                artists = artists + "," + song.getArtistId();
             }
         }
-
+        //Set query parameter in API endpoint.
         String endpoint = "https://api.spotify.com/v1/recommendations?seed_tracks=" + ids +
                 "&seed_artists=&seed_genres=&limit=50";
 
+        //Initialize request
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, endpoint, null, response -> {
                     Gson gson = new Gson();
@@ -227,10 +168,12 @@ public class SongService {
 
                     for (int n = 0; n < jsonArray.length(); n++) {
                         try {
+                            //creates song objects from JSON response
                             JSONObject object = jsonArray.getJSONObject(n);
 
                             Song song = gson.fromJson(object.toString(), Song.class);
 
+                            //Sets song uri, artist name, and artist id
                             String uri = object.optString("uri");
                             song.setURI(uri);
 
@@ -242,19 +185,17 @@ public class SongService {
                             song.setArtist(artistName);
                             song.setArtistId(artistID);
 
-                            //songMood(song, song.getId(), () -> {});
-
                             recommendedSongs.add(song);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-
                     callBack.onSuccess();
                 }, error -> {
-                    // TODO: Handle error
+                    Log.e(TAG, "Error getting recommended tracks", error);
 
                 }) {
+            //Authorization token for request
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -269,75 +210,11 @@ public class SongService {
         return recommendedSongs;
     }
 
-   /*public Song getTrack(String id, final VolleyCallBack callBack){
-        String endpoint = "https://api.spotify.com/v1/tracks/" + id;
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, endpoint, null, response -> {
-                    Gson gson = new Gson();
-
-
-                    JSONObject albumObject = response.optJSONObject("album");
-                    String albumID = albumObject.optString("id");
-                    song.setAlbumId(albumID);
-
-                    callBack.onSuccess();
-                }, error -> {
-                    // TODO: Handle error
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                String token = sharedPreferences.getString("token", "");
-                String auth = "Bearer " + token;
-                headers.put("Authorization", auth);
-                return headers;
-            }
-        };
-        queue.add(jsonObjectRequest);
-    }
-*/
-    public void setSongGenres(Song song, String ArtistId, final VolleyCallBack callBack){
-        String endpoint = "https://api.spotify.com/v1/artists/" + ArtistId;
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, endpoint, null, response -> {
-                    Gson gson = new Gson();
-                    JSONArray artistGenres = response.optJSONArray("genres");
-                    if (artistGenres.length() == 0) {
-                        Log.i("SongService", "song genre: " +
-                                artistGenres.optString(0));
-                    }
-                    String genres = "";
-
-                    for (int n = 0; n < artistGenres.length(); n++) {
-                        if (genres.isEmpty()) {
-                            genres = artistGenres.optString(n);
-                        } else {
-                            genres = genres + "," + artistGenres.optString(n);
-                        }
-                    }
-                    song.setGenres(genres);
-                    callBack.onSuccess();
-
-                }, error -> {
-                    // TODO: Handle error
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                String token = sharedPreferences.getString("token", "");
-                String auth = "Bearer " + token;
-                headers.put("Authorization", auth);
-                return headers;
-            }
-        };
-        queue.add(jsonObjectRequest);
-    }
-    
+    //Retrieve's a user's recently played tracks
     public ArrayList<Song> getRecentlyPlayedTracks(final VolleyCallBack callBack) {
         String endpoint = "https://api.spotify.com/v1/me/player/recently-played";
 
+        //Initialize request
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, endpoint, null, response -> {
                     Gson gson = new Gson();
@@ -345,22 +222,20 @@ public class SongService {
 
                     for (int n = 0; n < jsonArray.length(); n++) {
                         try {
+                            //creates song objects from JSON response
                             JSONObject object = jsonArray.getJSONObject(n);
                             object = object.optJSONObject("track");
 
                             Song song = gson.fromJson(object.toString(), Song.class);
 
+                            //Sets song uri, artist name, and artist id
                             JSONArray jsonArrayArtist = object.optJSONArray("artists");
                             JSONObject artistObject = jsonArrayArtist.getJSONObject(0);
-
-                            //song.setURI(uri);
 
                             String artistName = artistObject.optString("name");
                             String artistID = artistObject.optString("id");
                             song.setArtist(artistName);
                             song.setArtistId(artistID);
-
-                            //songMood(song, song.getId(), () -> {});
 
                             songs.add(song);
                         } catch (JSONException e) {
@@ -369,9 +244,10 @@ public class SongService {
                     }
                     callBack.onSuccess();
                 }, error -> {
-                    // TODO: Handle error
-
+                    Log.e(TAG, "Error getting recently-played tracks", error);
                 }) {
+
+            //Authorization token for request
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
