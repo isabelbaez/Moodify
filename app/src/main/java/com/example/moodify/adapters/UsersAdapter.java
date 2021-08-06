@@ -1,6 +1,7 @@
-package com.example.moodify;
+package com.example.moodify.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
+import com.example.moodify.R;
+import com.example.moodify.activities.FriendProfileActivity;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +78,25 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             if (friends.contains(user.getUsername()) || user.getUsername().equals(currentUser.getUsername())) {
                 btnAdd.setVisibility(View.GONE);
             }
+
+            tvUsername.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Log.i("yes", "yes");
+                    // make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        // get the tweet at the position, this won't work if the class is static
+                        ParseUser user = users.get(position);
+                        // create intent for the new activity
+                        Intent intent = new Intent(context, FriendProfileActivity.class);
+                        // serialize the movie using parceler, use its short name as a key
+                        intent.putExtra("user", Parcels.wrap(user));
+                        // show the activity
+                        context.startActivity(intent);
+                    }
+                }
+            });
 
             btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override

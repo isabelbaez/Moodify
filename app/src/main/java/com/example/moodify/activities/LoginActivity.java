@@ -1,4 +1,4 @@
-package com.example.moodify;
+package com.example.moodify.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,14 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.moodify.MainActivity;
 import com.example.moodify.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.spotify.sdk.android.auth.AuthorizationClient;
-import com.spotify.sdk.android.auth.AuthorizationRequest;
-import com.spotify.sdk.android.auth.AuthorizationResponse;
 
 public class LoginActivity extends AppCompatActivity {
 

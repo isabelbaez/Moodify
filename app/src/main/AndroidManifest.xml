@@ -12,14 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moodify">
-        <activity android:name=".MixActivity"></activity>
-        <activity android:name=".FriendProfileActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".activities.MixActivity" />
+        <activity android:name=".activities.FriendProfileActivity" />
+        <activity android:name=".activities.SignupActivity" />
+        <activity android:name=".activities.LoginActivity" />
         <activity
             android:name="com.spotify.sdk.android.auth.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

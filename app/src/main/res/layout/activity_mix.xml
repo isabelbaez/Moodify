@@ -4,14 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MixActivity">
+    tools:context=".activities.MixActivity">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+    <ImageButton
+        android:id="@+id/btnBackExplore"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/back_button" />
 
     <TextView
         android:id="@+id/tvMood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/btnBackExplore"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="20dp"
+        android:textColor="#000000"
+        android:fontFamily="@font/waukegan_ldo_bold"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSongs"
@@ -20,6 +43,7 @@
         android:layout_below="@+id/tvMood"
         android:layout_alignStart="@+id/tvMood"
         android:layout_marginStart="0dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp" />
 
 </RelativeLayout>

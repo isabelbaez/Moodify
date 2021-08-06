@@ -1,4 +1,4 @@
-package com.example.moodify;
+package com.example.moodify.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -65,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         songService = new SongService(this);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //getSupportActionBar().hide();
 
         setContentView(R.layout.activity_main);
 
@@ -95,9 +92,11 @@ public class MainActivity extends AppCompatActivity {
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
 
+
         final FragmentManager fragmentManager = getSupportFragmentManager();
         BottomNavigationView bottomNavigationView =
                 (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
 
         // handle navigation selection
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -123,7 +122,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        bottomNavigationView.setSelectedItemId(R.id.feed_action);
+        if (getIntent().getExtras() != null) {
+            bottomNavigationView.setSelectedItemId(R.id.explore_action);
+            } else {
+            bottomNavigationView.setSelectedItemId(R.id.feed_action);
+        }
     }
 
     private void getTracks(ParseUser user) {
@@ -226,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (recentlyPlayedTracks.size() > 0) {
 
-            //ParseUser user = ParseUser.getCurrentUser();
             Song firstSong = recentlyPlayedTracks.get(0);
 
             songService.songMood(firstSong, firstSong.getId(), () -> {

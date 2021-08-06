@@ -1,4 +1,4 @@
-package com.example.moodify;
+package com.example.moodify.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,13 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moodify.R;
+import com.example.moodify.activities.FriendProfileActivity;
 import com.parse.ParseUser;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
@@ -131,6 +132,7 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
             tvStatus.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    Toast.makeText(context, "Song now playing on Spotify!", Toast.LENGTH_LONG).show();
                     mSpotifyAppRemote.getPlayerApi().play(user.getString("lastSongURI"));
                     return false;
                 }

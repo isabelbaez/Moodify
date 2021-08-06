@@ -1,29 +1,20 @@
-package com.example.moodify;
+package com.example.moodify.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.moodify.fragments.ExploreFragment;
-import com.example.moodify.fragments.FeedFragment;
-import com.example.moodify.fragments.ProfileFragment;
+import com.example.moodify.R;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
@@ -38,6 +29,8 @@ public class FriendProfileActivity extends AppCompatActivity {
     TextView etFriendStatus;
     PieChart pcFriendMoods;
     ImageButton btnBack;
+
+    TextView etNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +48,10 @@ public class FriendProfileActivity extends AppCompatActivity {
         etFriendName.setText(user.getUsername());
         etFriendStatus.setText(user.getString("status"));
 
+        Description desc = new Description();
+        desc.setText("");
+        pcFriendMoods.setDescription(desc);
+
         ArrayList<PieEntry> value = new ArrayList<>();
 
         value.add(new PieEntry(Integer.valueOf(user.getString("happiness")), "happiness"));
@@ -67,6 +64,13 @@ public class FriendProfileActivity extends AppCompatActivity {
         PieData moodData = new PieData(moodDataSet);
 
         pcFriendMoods.setData(moodData);
+
+        etNumber = (TextView) findViewById(R.id.etNumber);
+
+        ArrayList<String> following = (ArrayList<String>) user.get("friends");
+        Integer followingNum = following.size();
+
+        etNumber.setText(followingNum.toString());
 
         moodDataSet.setColors(MOOD_COLORS);
 

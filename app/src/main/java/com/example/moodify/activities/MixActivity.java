@@ -1,13 +1,18 @@
-package com.example.moodify;
+package com.example.moodify.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Movie;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.example.moodify.R;
+import com.example.moodify.adapters.SongsAdapter;
 import com.example.moodify.connectors.SongService;
 import com.example.moodify.models.Song;
 import com.parse.ParseUser;
@@ -28,6 +33,9 @@ public class MixActivity extends AppCompatActivity {
     protected ArrayList<Song> recentlyPlayedTracks;
     protected ArrayList<Song> recommendedTracks;
 
+    protected TextView tvMood;
+    protected ImageButton btnBackExplore;
+
     RecyclerView rvSongs;
 
     @Override
@@ -41,6 +49,8 @@ public class MixActivity extends AppCompatActivity {
         songsAdapter = new SongsAdapter(this, songs);
 
         rvSongs = findViewById(R.id.rvSongs);
+        tvMood = findViewById(R.id.tvMood);
+        btnBackExplore = findViewById(R.id.btnBackExplore);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
@@ -48,6 +58,21 @@ public class MixActivity extends AppCompatActivity {
         rvSongs.setLayoutManager(linearLayoutManager);
 
         getTracks(currentUser, mood);
+
+        tvMood.setText(mood + " Mix");
+
+        btnBackExplore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goExploreFragment();
+            }
+        });
+    }
+
+    private void goExploreFragment() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("frgToLoad", "explore");
+        startActivity(i);
     }
 
     private void getTracks(ParseUser user, String mood) {

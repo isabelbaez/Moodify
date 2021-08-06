@@ -81,18 +81,18 @@ public class SongService {
                     }
 
                     //sets energy value as "low", "medium", or "high"
-                    if (0.0 <= energyDecimal && energyDecimal <= 0.33) {
+                    if (0.0 <= energyDecimal && energyDecimal <= 0.40) {
                         energy = "low";
-                    } else if (0.33 < energyDecimal && energyDecimal <= 0.66) {
+                    } else if (0.40 < energyDecimal && energyDecimal <= 0.60) {
                         energy = "medium";
                     } else {
                         energy = "high";
                     }
 
                     //sets valence value as "low", "medium", or "high"
-                    if (0.0 <= valenceDecimal && valenceDecimal <= 0.33) {
+                    if (0.0 <= valenceDecimal && valenceDecimal <= 0.40) {
                         valence = "low";
-                    } else if (0.33 < valenceDecimal && valenceDecimal <= 0.66) {
+                    } else if (0.40 < valenceDecimal && valenceDecimal <= 0.55) {
                         valence = "medium";
                     } else {
                         valence = "high";
@@ -111,9 +111,6 @@ public class SongService {
                         if (valence.equals("low")) {
                             // medium energy but negative lyrics, equal sad song
                             song.setMood("Sad");
-                        } else if (valence.equals("medium")){
-                            // medium energy but fine/happy lyrics, equal happy
-                            song.setMood("Happy");
                         } else {
                             song.setMood("Happy");
                         }
@@ -158,7 +155,7 @@ public class SongService {
         }
         //Set query parameter in API endpoint.
         String endpoint = "https://api.spotify.com/v1/recommendations?seed_tracks=" + ids +
-                "&seed_artists=&seed_genres=&limit=50";
+                "&seed_artists=&seed_genres=&limit=100";
 
         //Initialize request
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -205,7 +202,6 @@ public class SongService {
                 return headers;
             }
         };
-
         queue.add(jsonObjectRequest);
         return recommendedSongs;
     }

@@ -8,16 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.moodify.LoginActivity;
+import com.example.moodify.activities.LoginActivity;
 import com.example.moodify.R;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -29,7 +29,9 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment {
 
     private TextView etName;
+    private TextView etFollowing;
     private TextView etStatus;
+    private TextView etNumber;
     private PieChart pcMoods;
     private Button btnLogout;
 
@@ -52,16 +54,27 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        etName = (TextView) view.findViewById(R.id.etFriendName);
-        etStatus = (TextView) view.findViewById(R.id.etFriendStatus);
+        etName = (TextView) view.findViewById(R.id.etName);
+        etStatus = (TextView) view.findViewById(R.id.etStatus);
         btnLogout = (Button) view.findViewById(R.id.btnLogout);
+        etFollowing = (TextView) view.findViewById(R.id.etFollowing);
 
-        pcMoods = (PieChart) view.findViewById(R.id.pcFriendMoods);
+        pcMoods = (PieChart) view.findViewById(R.id.pcMoods);
 
         etName.setText(currentUser.getUsername());
         etStatus.setText(currentUser.getString("status"));
 
+        etNumber = (TextView) view.findViewById(R.id.etNumber);
+
+        ArrayList<String> following = (ArrayList<String>) currentUser.get("friends");
+        Integer followingNum = following.size();
+
+        etNumber.setText(followingNum.toString());
+
         ArrayList<PieEntry> value = new ArrayList<>();
+        Description desc = new Description();
+        desc.setText("");
+        pcMoods.setDescription(desc);
 
         value.add(new PieEntry(Integer.valueOf(currentUser.getString("happiness")), "happiness"));
         value.add(new PieEntry(Integer.valueOf(currentUser.getString("sadness")), "sadness"));
@@ -73,7 +86,6 @@ public class ProfileFragment extends Fragment {
         PieData moodData = new PieData(moodDataSet);
 
         pcMoods.setData(moodData);
-
         moodDataSet.setColors(MOOD_COLORS);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {

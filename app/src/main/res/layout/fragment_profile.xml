@@ -7,7 +7,7 @@
     tools:context=".fragments.ProfileFragment">
 
     <TextView
-        android:id="@+id/etFriendName"
+        android:id="@+id/etName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -19,11 +19,37 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/etFriendStatus"
+        android:id="@+id/etFollowing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/etName"
+        android:layout_alignStart="@+id/etName"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:text="Following "
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/etNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etName"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/etFollowing"
+        android:text="Number"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/etStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
         android:layout_below="@+id/currentStatus"
-        android:layout_alignStart="@+id/etFriendName"
+        android:layout_alignStart="@+id/etName"
         android:layout_marginStart="0dp"
         android:layout_marginTop="20dp"
         android:text="TextView"
@@ -33,8 +59,8 @@
         android:id="@+id/currentStatus"
         android:layout_width="150dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/etFriendName"
-        android:layout_alignStart="@+id/etFriendName"
+        android:layout_below="@+id/etFollowing"
+        android:layout_alignStart="@+id/etName"
         android:layout_alignParentLeft="true"
         android:layout_marginStart="15dp"
         android:layout_marginLeft="0dp"
@@ -45,8 +71,8 @@
         android:id="@+id/RecentMoods"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etFriendStatus"
-        android:layout_alignStart="@+id/etFriendName"
+        android:layout_below="@+id/etStatus"
+        android:layout_alignStart="@+id/etName"
         android:layout_marginStart="0dp"
         android:layout_marginTop="50dp"
         android:text="Your Recent Moods:"
@@ -55,10 +81,11 @@
         android:textStyle="bold" />
 
     <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pcFriendMoods"
+        android:id="@+id/pcMoods"
         android:layout_width="350dp"
         android:layout_height="350dp"
-        android:layout_alignStart="@+id/etFriendName"
+        android:layout_marginRight="20dp"
+        android:layout_alignStart="@+id/etName"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/RecentMoods" />

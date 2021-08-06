@@ -17,7 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.example.moodify.R;
-import com.example.moodify.StatusAdapter;
+import com.example.moodify.adapters.StatusAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;

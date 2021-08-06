@@ -1,6 +1,7 @@
 package com.example.moodify.fragments;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,14 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.moodify.MixActivity;
+import com.example.moodify.activities.MixActivity;
 import com.example.moodify.R;
-import com.example.moodify.SongsAdapter;
-import com.example.moodify.UsersAdapter;
-import com.example.moodify.connectors.SongService;
-import com.example.moodify.models.Song;
+import com.example.moodify.adapters.UsersAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -38,7 +37,7 @@ public class ExploreFragment extends Fragment {
     protected UsersAdapter userAdapter;
 
     protected EditText etSearch;
-    protected AppCompatImageButton btnSearch;
+    protected ImageView btnSearch;
     protected String username;
 
     RecyclerView rvUsers;
@@ -48,6 +47,18 @@ public class ExploreFragment extends Fragment {
     protected TextView AngryMix;
     protected TextView ChillMix;
     protected TextView EnergizedMix;
+
+    protected TextView tvHappyDesc;
+    protected TextView tvSadDesc;
+    protected TextView tvAngryDesc;
+    protected TextView tvChillDesc;
+    protected TextView tvEnergizedDesc;
+
+    protected TextView tvHappy;
+    protected TextView tvSad;
+    protected TextView tvAngry;
+    protected TextView tvChill;
+    protected TextView tvEnergized;
 
 
     public ExploreFragment() {
@@ -73,10 +84,32 @@ public class ExploreFragment extends Fragment {
         ChillMix = view.findViewById(R.id.ChillMix);
         EnergizedMix = view.findViewById(R.id.EnergizedMix);
 
-        /*users = new ArrayList<>();
+        int[] attrs = new int[]{R.attr.selectableItemBackground};
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs);
+
+        int backgroundResource = typedArray.getResourceId(0, 0);
+        HappyMix.setBackgroundResource(backgroundResource);
+        SadMix.setBackgroundResource(backgroundResource);
+        AngryMix.setBackgroundResource(backgroundResource);
+        ChillMix.setBackgroundResource(backgroundResource);
+        EnergizedMix.setBackgroundResource(backgroundResource);
+
+        tvHappyDesc = view.findViewById(R.id.tvHappyDesc);
+        tvSadDesc = view.findViewById(R.id.tvSadDesc);
+        tvAngryDesc = view.findViewById(R.id.tvAngryDesc);
+        tvChillDesc = view.findViewById(R.id.tvChillDesc);
+        tvEnergizedDesc = view.findViewById(R.id.tvEnergizedDesc);
+
+        tvHappy = view.findViewById(R.id.tvHappy);
+        tvSad = view.findViewById(R.id.tvSad);
+        tvAngry = view.findViewById(R.id.tvAngry);
+        tvChill = view.findViewById(R.id.tvChill);
+        tvEnergized = view.findViewById(R.id.tvEnergized);
+
+
+        users = new ArrayList<>();
 
         userAdapter = new UsersAdapter(getContext(), users);
-
 
         // User search things:
         rvUsers = view.findViewById(R.id.rvUsers);
@@ -89,17 +122,18 @@ public class ExploreFragment extends Fragment {
         rvUsers.setLayoutManager(linearLayoutManager);
         rvUsers.setVisibility(View.GONE);
 
+        btnSearch.setBackgroundResource(backgroundResource);
+
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rvUsers.setVisibility(View.VISIBLE);
                 userAdapter.clear();
                 username = etSearch.getText().toString();
-                queryStatuses(username);
+                queryUsers(username);
                 //rvUsers.setVisibility(View.GONE);
             }
         });
-*/
+
         HappyMix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,12 +165,62 @@ public class ExploreFragment extends Fragment {
         EnergizedMix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goMixActivity("Happy");
+                goMixActivity("Energized");
             }
         });
 
-
         etSearch = view.findViewById(R.id.etSearch);
+        etSearch.setFocusableInTouchMode(true);
+
+        etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    rvUsers.setVisibility(View.VISIBLE);
+                    userAdapter.clear();
+
+                    HappyMix.setVisibility(View.GONE);
+                    SadMix.setVisibility(View.GONE);
+                    AngryMix.setVisibility(View.GONE);
+                    ChillMix.setVisibility(View.GONE);
+                    EnergizedMix.setVisibility(View.GONE);
+
+                    tvHappyDesc.setVisibility(View.GONE);
+                    tvSadDesc.setVisibility(View.GONE);
+                    tvAngryDesc.setVisibility(View.GONE);
+                    tvChillDesc.setVisibility(View.GONE);
+                    tvEnergizedDesc.setVisibility(View.GONE);
+
+                    tvHappy.setVisibility(View.GONE);
+                    tvSad.setVisibility(View.GONE);
+                    tvAngry.setVisibility(View.GONE);
+                    tvChill.setVisibility(View.GONE);
+                    tvEnergized.setVisibility(View.GONE);
+
+                } else {
+                    rvUsers.setVisibility(View.GONE);
+
+                    HappyMix.setVisibility(View.VISIBLE);
+                    SadMix.setVisibility(View.VISIBLE);
+                    AngryMix.setVisibility(View.VISIBLE);
+                    ChillMix.setVisibility(View.VISIBLE);
+                    EnergizedMix.setVisibility(View.VISIBLE);
+
+                    tvHappyDesc.setVisibility(View.VISIBLE);
+                    tvSadDesc.setVisibility(View.VISIBLE);
+                    tvAngryDesc.setVisibility(View.VISIBLE);
+                    tvChillDesc.setVisibility(View.VISIBLE);
+                    tvEnergizedDesc.setVisibility(View.VISIBLE);
+
+                    tvHappy.setVisibility(View.VISIBLE);
+                    tvSad.setVisibility(View.VISIBLE);
+                    tvAngry.setVisibility(View.VISIBLE);
+                    tvChill.setVisibility(View.VISIBLE);
+                    tvEnergized.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         btnSearch = view.findViewById(R.id.btnSearch);
         //Log.i("ExploreFEed", "User: " + username);
     }
@@ -147,7 +231,7 @@ public class ExploreFragment extends Fragment {
         startActivity(intent);
     }
 
-    protected void queryStatuses(String username) {
+    protected void queryUsers(String username) {
         // specify what type of data we want to query - Post.class
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
         // include data referred by user key
