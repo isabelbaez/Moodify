@@ -42,6 +42,8 @@ public class SongService {
     private String energy;
     private String valence;
 
+    private String imageURL;
+
     private String TAG = "SongService";
 
     //Base code from (working with API calls) from:
@@ -139,6 +141,52 @@ public class SongService {
         };
         queue.add(jsonObjectRequest);
     }
+
+    public void songImage(Song song, String id, final VolleyCallBack callBack) {
+        String endpoint = "https://api.spotify.com/v1/tracks/" + id;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, endpoint, null, response -> {
+
+                    JSONObject albumObject = response.optJSONObject("album");
+
+                    JSONArray images = albumObject.optJSONArray("images");
+
+                    JSONObject imageObject = null;
+
+                    try {
+                        imageObject = images.getJSONObject(0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        imageURL = imageObject.getString("url");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    //Log.i("SongService", "Image URL: " + imageURL);
+                    song.setImagePath(imageURL);
+                    callBack.onSuccess();
+
+                    }, error -> {
+                        Log.e(TAG, "Error getting and setting song's mood", error);
+                    }) {
+                //Authorization token for request
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    String token = sharedPreferences.getString("token", "");
+                    String auth = "Bearer " + token;
+                    headers.put("Authorization", auth);
+                    return headers;
+                }
+            };
+                queue.add(jsonObjectRequest);
+        }
+
+
 
     //Taking some example songs, gets some recommended tracks based of the songs' IDs.
     public ArrayList<Song> getRecommendedTracks(ArrayList<Song> SeedTracks,

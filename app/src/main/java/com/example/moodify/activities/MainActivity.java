@@ -250,6 +250,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             });
+
+            songService.songImage(firstSong, firstSong.getId(), () -> {
+                user.put("lastSongImagePath", firstSong.getImagePath());
+                user.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e == null){
+                            Log.d(TAG, "Updated user:");
+                        }else{
+                            Log.d(TAG, "Error updating user: " + e.getLocalizedMessage());
+                        }
+                    }
+                });
+            });
         }
     }
 

@@ -9,12 +9,14 @@
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/ivImage"
+        android:background="?android:attr/selectableItemBackground"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:background="?android:attr/selectableItemBackground"
         tools:text="isabel" />
 
     <TextView
@@ -22,10 +24,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvUsername"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/ivImage"
         android:background="?android:attr/selectableItemBackground"
         android:textSize="16sp"
         tools:text="Feeling Sad and listening to Falling - Harry Styles" />
+
+    <ImageView
+        android:id="@+id/ivImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="20dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </RelativeLayout>

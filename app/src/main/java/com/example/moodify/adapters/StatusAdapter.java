@@ -7,12 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.moodify.R;
 import com.example.moodify.activities.FriendProfileActivity;
 import com.parse.ParseUser;
@@ -61,6 +63,7 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
 
         private TextView tvUsername;
         private TextView tvStatus;
+        private ImageView ivImage;
 
         public static final String TAG = "MainActivity";
         private final String CLIENT_ID = "1124ddefbcad484993f7f56399a98ffb";
@@ -72,6 +75,7 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
             super(itemView);
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvStatus = itemView.findViewById(R.id.tvStatus);
+            ivImage = itemView.findViewById(R.id.ivImage);
 
             ConnectionParams connectionParams =
                     new ConnectionParams.Builder(CLIENT_ID)
@@ -137,6 +141,8 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
                     return false;
                 }
             });
+
+            Glide.with(context).load(user.getString("lastSongImagePath")).into(ivImage);
         }
     }
 }

@@ -10,6 +10,7 @@ public class Song {
     private String AlbumId;
     private String ArtistId;
     private String genres;
+    private String imageURL;
 
     public Song(String id, String name, String uri) {
         this.name = name;
@@ -61,18 +62,16 @@ public class Song {
         return ArtistId;
     }
 
+    public String getImagePath() {
+        return imageURL;
+    }
+
+    public void setImagePath(String imageURL) {
+        this.imageURL = imageURL;
+    }
     public void setArtistId(String ArtistId) {
         this.ArtistId = ArtistId;
     }
-
-    public String getGenres() {
-        return genres;
-    }
-
-    public void setGenres(String genres) {
-        this.genres = genres;
-    }
-
 
 
 }

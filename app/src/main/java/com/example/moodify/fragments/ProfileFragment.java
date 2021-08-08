@@ -67,6 +67,11 @@ public class ProfileFragment extends Fragment {
         etNumber = (TextView) view.findViewById(R.id.etNumber);
 
         ArrayList<String> following = (ArrayList<String>) currentUser.get("friends");
+
+        if (following == null) {
+            following = new ArrayList<>();
+        }
+
         Integer followingNum = following.size();
 
         etNumber.setText(followingNum.toString());

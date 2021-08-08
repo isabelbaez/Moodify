@@ -68,6 +68,11 @@ public class FriendProfileActivity extends AppCompatActivity {
         etNumber = (TextView) findViewById(R.id.etNumber);
 
         ArrayList<String> following = (ArrayList<String>) user.get("friends");
+
+        if (following == null) {
+            following = new ArrayList<>();
+        }
+
         Integer followingNum = following.size();
 
         etNumber.setText(followingNum.toString());
